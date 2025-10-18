@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动物性格测试 | 你的心理日记</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-color: #8B7355;
+            --secondary-color: #A9A9A9;
+            --accent-color: #CD853F;
+            --light-color: #F5F5F5;
+            --dark-color: #2F2F2F;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8f6f2 0%, #eae6df 100%);
+            color: var(--dark-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            padding: 40px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 30px;
+            border-bottom: 1px solid rgba(139, 115, 85, 0.2);
+        }
+        
+        .brand-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .brand-name {
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            margin-top: 5px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            position: relative;
+            display: inline-block;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .brand-name::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .subtitle {
+            color: var(--secondary-color);
+            font-size: 1.3rem;
+            margin-top: 10px;
+            font-weight: 400;
+            font-style: italic;
+            letter-spacing: 0.5px;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background-color: #e8e3dc;
+            border-radius: 4px;
+            margin: 40px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 4px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .question-container {
+            text-align: center;
+            padding: 20px 0;
+            min-height: 450px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .question-number {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        
+        .question-text {
+            font-size: 1.8rem;
+            color: var(--dark-color);
+            margin-bottom: 50px;
+            line-height: 1.6;
+            font-weight: 500;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin-bottom: 40px;
+        }
+        
+        .option {
+            background-color: var(--light-color);
+            border: 1px solid #e8e3dc;
+            border-radius: 12px;
+            padding: 20px 25px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: left;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option:hover {
+            background-color: #f0ede7;
+            border-color: #d6cec0;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .option.selected {
+            background-color: #f8f4ee;
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(139, 115, 85, 0.15);
+        }
+        
+        .option.selected::before {
+            content: "✓";
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+        
+        .buttons-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        button {
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:disabled {
+            background-color: #d6cec0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .prev-btn {
+            background-color: var(--secondary-color);
+        }
+        
+        .prev-btn:hover:not(:disabled) {
+            background-color: #8f8f8f;
+        }
+        
+        .result-container {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .result-title {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .result-subtitle {
+            color: var(--secondary-color);
+            font-size: 1.3rem;
+            margin-bottom: 50px;
+            font-style: italic;
+        }
+        
+        .animal-pair {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+        
+        .animal-card {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 30px;
+            background-color: white;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid #f0ede7;
+        }
+        
+        .animal-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .animal-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+        }
+        
+        .animal-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            font-size: 1.7rem;
+            position: relative;
+            display: inline-block;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .animal-card h3::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent-color);
+            border-radius: 1px;
+        }
+        
+        .animal-image {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 30px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+            border: 5px solid white;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .animal-icon {
+            width: 140px;
+            height: 140px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .animal-name {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin: 25px 0;
+            font-weight: bold;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .result-description {
+            text-align: left;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            padding: 0 10px;
+            font-size: 1.05rem;
+            color: #444;
+        }
+        
+        .section-title {
+            text-align: left;
+            color: var(--primary-color);
+            margin: 30px 0 18px;
+            font-size: 1.4rem;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 15px;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .animal-traits {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .trait {
+            background-color: #f8f4ee;
+            color: var(--primary-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border: 1px solid #e8e3dc;
+        }
+        
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 40px;
+        }
+        
+        .restart-btn {
+            background: linear-gradient(135deg, #8B7355, #CD853F);
+            padding: 18px 50px;
+            font-size: 1.3rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(139, 115, 85, 0.3);
+        }
+        
+        .shop-btn {
+            background: linear-gradient(135deg, #6A8EAE, #9BB1C5);
+            padding: 16px 45px;
+            font-size: 1.2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(106, 142, 174, 0.3);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+            max-width: 800px;
+            line-height: 1.6;
+        }
+        
+        .paw-print {
+            display: inline-block;
+            margin: 0 8px;
+            font-size: 1.2rem;
+        }
+        
+        .emoji {
+            font-size: 1.3rem;
+            margin-right: 8px;
+        }
+        
+        .decoration {
+            position: absolute;
+            opacity: 0.03;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .decoration-1 {
+            top: 10%;
+            right: 5%;
+            font-size: 12rem;
+        }
+        
+        .decoration-2 {
+            bottom: 10%;
+            left: 5%;
+            font-size: 10rem;
+        }
+        
+        /* 移动端优化 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 25px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .brand-name {
+                font-size: 1.8rem;
+            }
+            
+            .question-text {
+                font-size: 1.5rem;
+            }
+            
+            .option {
+                padding: 18px 20px;
+                font-size: 1rem;
+            }
+            
+            .animal-image {
+                width: 170px;
+                height: 170px;
+            }
+            
+            .animal-icon {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .animal-card {
+                padding: 25px;
+            }
+            
+            .decoration {
+                display: none;
+            }
+            
+            .restart-btn {
+                padding: 16px 40px;
+                font-size: 1.2rem;
+            }
+            
+            .shop-btn {
+                padding: 14px 35px;
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 20px;
+            }
+            
+            h1 {
+                font-size: 1.9rem;
+            }
+            
+            .brand-name {
+                font-size: 1.6rem;
+            }
+            
+            .question-text {
+                font-size: 1.4rem;
+            }
+            
+            .option {
+                padding: 15px 18px;
+            }
+            
+            button {
+                padding: 14px 25px;
+                font-size: 1rem;
+            }
+            
+            .animal-name {
+                font-size: 1.7rem;
+            }
+            
+            .animal-card {
+                padding: 20px;
+            }
+            
+            .animal-image {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .animal-icon {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="decoration decoration-1">🐾</div>
+    <div class="decoration decoration-2">📖</div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="brand-container">
+                <div class="brand-name">你的心理日记</div>
+            </div>
+            <h1>动物性格测试</h1>
+            <p class="subtitle">探索内外自我的奇妙旅程</p>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div id="questionScreen">
+            <div class="question-container">
+                <div class="question-number" id="questionNumber">第1题/共40题</div>
+                <div class="question-text" id="questionText"></div>
+                
+                <div class="options-container" id="optionsContainer"></div>
+                
+                <div class="buttons-container">
+                    <button class="prev-btn" id="prevBtn" disabled>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        上一题
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="resultScreen" style="display:none;">
+            <div class="result-container">
+                <div class="result-title">你的动物性格分析</div>
+                <p class="result-subtitle">发现内外自我的奇妙平衡</p>
+                
+                <div class="animal-pair">
+                    <div class="animal-card">
+                        <h3>外在动物</h3>
+                        <div class="animal-image">
+                            <div class="animal-icon" id="outerAnimalIcon"></div>
+                        </div>
+                        <div class="animal-name" id="outerAnimalName"></div>
+                        
+                        <div class="section-title">人格解析</div>
+                        <div class="result-description" id="outerAnimalDesc"></div>
+                        
+                        <div class="section-title">社交表现</div>
+                        <div class="result-description" id="outerAnimalFriendsView"></div>
+                        
+                        <div class="section-title">主要特质</div>
+                        <div class="animal-traits" id="outerAnimalTraits"></div>
+                    </div>
+                    
+                    <div class="animal-card">
+                        <h3>内在动物</h3>
+                        <div class="animal-image">
+                            <div class="animal-icon" id="innerAnimalIcon"></div>
+                        </div>
+                        <div class="animal-name" id="innerAnimalName"></div>
+                        
+                        <div class="section-title">人格解析</div>
+                        <div class="result-description" id="innerAnimalDesc"></div>
+                        
+                        <div class="section-title">内心世界</div>
+                        <div class="result-description" id="innerAnimalSelfView"></div>
+                        
+                        <div class="section-title">主要特质</div>
+                        <div class="animal-traits" id="innerAnimalTraits"></div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="restart-btn" id="restartBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M23 4V10H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M1 20V14H7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3.51 9C4.01717 7.56678 4.87913 6.2854 6.01547 5.27542C7.1518 4.26543 8.52547 3.55976 10.0083 3.22426C11.4911 2.88875 13.0348 2.93434 14.4952 3.35677C15.9556 3.77921 17.2853 4.56471 18.36 5.64L23 10M1 14L5.64 18.36C6.71475 19.4353 8.04437 20.2208 9.50481 20.6432C10.9652 21.0657 12.5089 21.1113 13.9917 20.7757C15.4745 20.4402 16.8482 19.7346 17.9845 18.7246C19.1209 17.7146 19.9828 16.4332 20.49 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        重新测试
+                    </button>
+                    
+                    <button class="shop-btn" id="shopBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.7 15.3C4.3 15.7 4.6 16.4 5.2 16.4H17M17 16C16.4 16 16 16.4 16 17C16 17.6 16.4 18 17 18C17.6 18 18 17.6 18 17C18 16.4 17.6 16 17 16ZM9 17C9 17.6 8.6 18 8 18C7.4 18 7 17.6 7 17C7 16.4 7.4 16 8 16C8.6 16 9 16.4 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        前往「你的心理日记」小红书店铺
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>
+            <span class="paw-print">🐾</span>
+            本测试由「你的心理日记」精心设计，探索自我，从了解开始
+            <span class="paw-print">🐾</span>
+        </p>
+    </div>
+
+    <script>
+        // 测试题目数据 - 包含60道题目，每次随机抽取40道
+        const questionPool = [
+            {
+                text: "当你走进一个满是陌生人的派对，你会？",
+                options: [
+                    "直接走向食物区，毕竟干饭人干饭魂",
+                    "找个角落刷手机，假装自己很忙的样子", 
+                    "主动找人搭讪，成为全场社交牛逼症患者",
+                    "观察谁看起来最有趣，然后慢慢靠近"
+                ]
+            },
+            {
+                text: "你的手机相册里最多的是什么？",
+                options: [
+                    "各种美食照片，深夜放毒专用",
+                    "自拍和与朋友的合照，记录美好瞬间",
+                    "搞笑表情包和网络梗图，聊天必备",
+                    "风景照和文艺小清新图片，朋友圈素材"
+                ]
+            },
+            {
+                text: "当朋友向你倾诉烦恼时，你通常会？",
+                options: [
+                    "给出实际建议，像个生活小能手",
+                    "认真倾听并给予情感支持，暖心小天使",
+                    "讲个笑话转移注意力，气氛组担当",
+                    "分析问题根源，展现你的逻辑思维能力"
+                ]
+            },
+            {
+                text: "周末早晨醒来，你的第一反应是？",
+                options: [
+                    "再睡五分钟...然后两小时过去了",
+                    "立刻起床，开启元气满满的一天",
+                    "躺在床上刷手机，开启网上冲浪模式",
+                    "思考今天要做什么，然后继续躺着"
+                ]
+            },
+            {
+                text: "你的购物车通常是什么样的？",
+                options: [
+                    "全是零食和好吃的，吃货认证",
+                    "时尚单品和化妆品，精致生活必备",
+                    "各种奇怪但有趣的小玩意，猎奇爱好者",
+                    "实用主义至上，只买必需品"
+                ]
+            },
+            {
+                text: "当你在工作中犯了一个小错误，你会？",
+                options: [
+                    "立刻承认并道歉，诚实小标兵",
+                    "试图悄悄修正，希望没人发现",
+                    "用幽默化解尴尬，气氛调节大师",
+                    "分析错误原因，防止再次发生"
+                ]
+            },
+            {
+                text: "你的手机闹钟设置是？",
+                options: [
+                    "只有一个闹钟，相信自己的意志力",
+                    "设置十个闹钟，每隔五分钟响一次",
+                    "根据当天心情随意设置，随性派",
+                    "精心计算睡眠周期，科学起床法"
+                ]
+            },
+            {
+                text: "当有人插队时，你会？",
+                options: [
+                    "直接指出，维护正义的使者",
+                    "心里不爽但不敢说，默默生气",
+                    "开玩笑式地提醒，既表达不满又不伤和气",
+                    "分析插队者的动机，试图理解对方"
+                ]
+            },
+            {
+                text: "你的微信聊天风格是？",
+                options: [
+                    "言简意赅，能一句话绝不用两句",
+                    "喜欢发表情包和梗图，欢乐源泉",
+                    "认真回复每一条消息，聊天小天使",
+                    "喜欢发长语音，语音消息爱好者"
+                ]
+            },
+            {
+                text: "当你看到镜子里的自己，你会？",
+                options: [
+                    "欣赏自己的美貌，自恋一下",
+                    "立刻找角度自拍，记录美好瞬间",
+                    "做鬼脸，跟自己玩耍",
+                    "冷静分析今天的穿着是否得体"
+                ]
+            },
+            {
+                text: "你的解压方式是什么？",
+                options: [
+                    "大吃一顿，美食治愈一切",
+                    "疯狂购物，买买买是王道",
+                    "看搞笑视频，笑到肚子痛",
+                    "独自散步或冥想，放空自己"
+                ]
+            },
+            {
+                text: "当朋友讲了一个不好笑的笑话，你会？",
+                options: [
+                    "直接说不好笑，诚实到残忍",
+                    "勉强笑一下，给点面子",
+                    "笑得比谁都大声，捧场王本人",
+                    "分析为什么这个笑话不好笑"
+                ]
+            },
+            {
+                text: "你的周末计划通常是？",
+                options: [
+                    "宅在家里，享受肥宅快乐生活",
+                    "约朋友出去玩，社交达人",
+                    "尝试新事物，冒险家精神",
+                    "完成未完成的工作，勤劳小蜜蜂"
+                ]
+            },
+            {
+                text: "当你遇到喜欢的人，你会？",
+                options: [
+                    "直接表白，勇敢追爱",
+                    "暗恋并默默关注，羞涩小可爱",
+                    "想办法吸引对方注意，恋爱小天才",
+                    "理性分析是否合适，谨慎派"
+                ]
+            },
+            {
+                text: "你的手机电量低于多少时会焦虑？",
+                options: [
+                    "50%就开始找充电器，电量焦虑症",
+                    "20%才有点担心，心大型",
+                    "10%还能淡定使用，冒险家",
+                    "随时保持满电，安全感满满"
+                ]
+            },
+            {
+                text: "当朋友迟到时，你会？",
+                options: [
+                    "直接表达不满，时间观念强",
+                    "理解并耐心等待，温柔体贴",
+                    "开玩笑抱怨，既表达不满又不伤感情",
+                    "利用等待时间做自己的事，效率达人"
+                ]
+            },
+            {
+                text: "你的外卖订单历史最能体现什么？",
+                options: [
+                    "尝试各种新餐厅，美食探险家",
+                    "总是点同样的几家，专一型选手",
+                    "根据心情随意点，随性派",
+                    "精心计算热量和营养，健康达人"
+                ]
+            },
+            {
+                text: "当你看到一个特别好笑的段子，你会？",
+                options: [
+                    "立刻分享给所有好友，快乐传播者",
+                    "独自笑到停不下来，自嗨型",
+                    "收藏起来以后用，梗图收藏家",
+                    "分析为什么好笑，理性派"
+                ]
+            },
+            {
+                text: "你的旅行风格是？",
+                options: [
+                    "精心规划每个细节，计划控",
+                    "随心所欲，走到哪算哪，自由灵魂",
+                    "拍照打卡型，朋友圈素材收集者",
+                    "深度体验当地文化，文化探索者"
+                ]
+            },
+            {
+                text: "当有人夸你时，你的反应是？",
+                options: [
+                    "大方接受并感谢，自信满满",
+                    "谦虚否认，害羞型",
+                    "开玩笑回应，幽默化解",
+                    "分析对方夸赞的动机，理性派"
+                ]
+            },
+            {
+                text: "你的手机里最多的APP类型是？",
+                options: [
+                    "社交软件，社交达人",
+                    "游戏APP，网瘾少年/少女",
+                    "学习工具，学霸本霸",
+                    "购物软件，剁手党"
+                ]
+            },
+            {
+                text: "当你遇到困难时，你的第一反应是？",
+                options: [
+                    "自己想办法解决，独立自主",
+                    "立刻求助朋友，团队协作型",
+                    "先吐槽发泄情绪，情绪释放者",
+                    "冷静分析问题，逻辑思考者"
+                ]
+            },
+            {
+                text: "你的房间通常是什么状态？",
+                options: [
+                    "整洁有序，强迫症患者",
+                    "有点乱但自己知道东西在哪，乱中有序",
+                    "经常大扫除但很快又乱了，循环往复",
+                    "艺术性混乱，创意工作者的房间"
+                ]
+            },
+            {
+                text: "当你听到一首喜欢的歌，你会？",
+                options: [
+                    "单曲循环直到听腻，专一型",
+                    "立刻分享给朋友，安利小能手",
+                    "研究歌词和背景，深度爱好者",
+                    "随缘听，不刻意追求"
+                ]
+            },
+            {
+                text: "你的早餐通常是什么？",
+                options: [
+                    "精心准备的营养早餐，健康生活",
+                    "随便吃点或不吃，随性派",
+                    "外卖解决，现代生活代表",
+                    "根据心情决定，多样化选择"
+                ]
+            },
+            {
+                text: "当朋友做出一个你不同意的决定，你会？",
+                options: [
+                    "直接表达反对意见，直言不讳",
+                    "尊重对方选择，包容型",
+                    "委婉提出建议，沟通高手",
+                    "分析利弊帮助对方决策，理性支持者"
+                ]
+            },
+            {
+                text: "你的周末睡懒觉能力如何？",
+                options: [
+                    "能睡到下午，睡神附体",
+                    "生物钟固定，想睡也睡不着",
+                    "取决于前晚熬夜程度，弹性睡眠",
+                    "设置闹钟但经常按掉，挣扎型"
+                ]
+            },
+            {
+                text: "当你看到一个特别可爱的宠物，你会？",
+                options: [
+                    "立刻上前互动，宠物爱好者",
+                    "远远欣赏，害羞型",
+                    "拍照分享到社交媒体，内容创作者",
+                    "研究宠物品种和习性，知识型"
+                ]
+            },
+            {
+                text: "你的微信朋友圈通常是？",
+                options: [
+                    "生活日常分享，记录生活",
+                    "精心策划的内容，形象管理大师",
+                    "很少发朋友圈，神秘人物",
+                    "各种转发和分享，信息传播者"
+                ]
+            },
+            {
+                text: "当计划被打乱时，你的反应是？",
+                options: [
+                    "非常焦虑，计划控的崩溃",
+                    "灵活调整，随遇而安",
+                    "幽默应对，苦中作乐",
+                    "分析新情况的利弊，理性适应"
+                ]
+            },
+            {
+                text: "当你收到一条令人困惑的消息，你会？",
+                options: [
+                    "直接问清楚，不喜欢猜测",
+                    "反复琢磨，试图理解深层含义",
+                    "发个表情包回应，避免尴尬",
+                    "先放着，等对方主动解释"
+                ]
+            },
+            {
+                text: "你的学习/工作桌面是怎样的？",
+                options: [
+                    "整洁有序，每样东西都有固定位置",
+                    "有点乱但能找到需要的东西",
+                    "堆满各种小物件和装饰品",
+                    "只有电脑和水杯，极简主义"
+                ]
+            },
+            {
+                text: "当你需要做重要决定时，你更依赖？",
+                options: [
+                    "直觉和第一感觉",
+                    "朋友和家人的建议",
+                    "数据和事实分析",
+                    "过去的经验和教训"
+                ]
+            },
+            {
+                text: "你的社交媒体使用习惯是？",
+                options: [
+                    "频繁更新，分享生活点滴",
+                    "偶尔发帖，内容精心策划",
+                    "主要浏览，很少主动发内容",
+                    "几乎不用，更喜欢现实生活"
+                ]
+            },
+            {
+                text: "当你感到无聊时，通常会？",
+                options: [
+                    "找朋友聊天或约见面",
+                    "刷视频或玩游戏消磨时间",
+                    "学习新技能或知识",
+                    "发呆或思考人生"
+                ]
+            },
+            {
+                text: "你如何看待流行趋势？",
+                options: [
+                    "紧跟潮流，尝试最新事物",
+                    "选择性跟随，只采纳适合自己的",
+                    "不太在意，坚持自己的风格",
+                    "批判性看待，分析背后的原因"
+                ]
+            },
+            {
+                text: "你的假期计划通常是？",
+                options: [
+                    "详细规划每一天的活动",
+                    "有个大致方向，灵活调整",
+                    "完全随性，走到哪算哪",
+                    "宅在家里休息，恢复能量"
+                ]
+            },
+            {
+                text: "当你与别人意见不合时，你会？",
+                options: [
+                    "坚持己见，毕竟'我说的都对'",
+                    "寻求折中方案，主打和和气气",
+                    "幽默化解，'只要我不尴尬，尴尬的就是别人'",
+                    "保留意见，懂得'尊重他人命运'"
+                ]
+            },
+            {
+                text: "你更喜欢哪种类型的电影？",
+                options: [
+                    "动作冒险片，追求肾上腺素飙升的快感",
+                    "浪漫喜剧，甜到齁死单身狗的那种",
+                    "悬疑推理，享受脑子不够用的烧脑挑战",
+                    "文艺剧情，深夜emo必备良品"
+                ]
+            },
+            {
+                text: "你如何看待失败？",
+                options: [
+                    "视为学习机会，'在哪里跌倒就在哪里躺会儿'",
+                    "感到沮丧但很快恢复，算是摆烂但没完全摆",
+                    "用幽默化解，'笑死，问题不大'",
+                    "深入分析原因，确保同一个坑绝不踩两次"
+                ]
+            },
+            {
+                text: "当你在社交媒体上看到争议话题，你会？",
+                options: [
+                    "积极参与讨论，瞬间化身键盘侠",
+                    "默默围观，安心做个吃瓜群众",
+                    "分享给朋友，'一起来吃瓜'",
+                    "直接划走，主打一个'与我无瓜'"
+                ]
+            },
+            {
+                text: "你更喜欢哪种学习方式？",
+                options: [
+                    "直接上手实操，在实践中成长",
+                    "看视频听讲解，眼睛和耳朵是我的学习搭子",
+                    "自己看书研究，享受独自美丽的学霸时光",
+                    "和小伙伴讨论，在思维碰撞中火花四溅"
+                ]
+            },
+            {
+                text: "当你面对多个任务时，你会？",
+                options: [
+                    "按顺序一个一个完成，稳如老狗",
+                    "同时进行多个任务，时间管理大师就是我",
+                    "先完成简单的，建立自信再说",
+                    "先完成最重要的，抓住重点其他随缘"
+                ]
+            },
+            {
+                text: "你如何应对突如其来的变化？",
+                options: [
+                    "立即调整计划，随机应变小能手",
+                    "感到焦虑需要时间适应，'让我缓缓'",
+                    "保持乐观，'问题不大，心态要好'",
+                    "分析变化利弊，'让子弹飞一会儿'"
+                ]
+            },
+            {
+                text: "你更喜欢哪种类型的书籍？",
+                options: [
+                    "小说故事类，在别人的故事里流自己的泪",
+                    "实用技能类，坚信技多不压身",
+                    "心理哲学类，试图看透人生真谛",
+                    "传记历史类，以史为鉴可以知兴替"
+                ]
+            },
+            {
+                text: "当你在团队中工作时，你通常扮演什么角色？",
+                options: [
+                    "领导组织者，团队的主心骨",
+                    "执行配合者，靠谱的打工人",
+                    "创意提供者，团队的点子王",
+                    "协调沟通者，团队的粘合剂"
+                ]
+            },
+            {
+                text: "你如何对待自己的情绪？",
+                options: [
+                    "直接表达，情绪都写在脸上",
+                    "控制情绪保持理性，做个情绪稳定的成年人",
+                    "通过其他方式发泄，转移注意力大法",
+                    "分析情绪产生原因，自我剖析大师"
+                ]
+            },
+            {
+                text: "你更喜欢哪种类型的音乐？",
+                options: [
+                    "流行轻音乐，耳熟能详跟着哼",
+                    "摇滚电子音乐，蹦迪选手必备",
+                    "古典纯音乐，高雅艺术爱好者",
+                    "民谣乡村音乐，文艺青年标配"
+                ]
+            },
+            {
+                text: "当你面对批评时，你会？",
+                options: [
+                    "认真听取并反思，有则改之无则加勉",
+                    "感到受伤但不会表现出来，表面笑嘻嘻心里MMP",
+                    "为自己辩解，'我不是我没有别瞎说'",
+                    "分析批评合理性，选择性听取"
+                ]
+            },
+            {
+                text: "你更喜欢哪种类型的运动？",
+                options: [
+                    "团队运动，要赢一起赢",
+                    "个人运动，享受独自美丽",
+                    "对抗性运动，不服来战",
+                    "舒缓运动，佛系养生"
+                ]
+            },
+            {
+                text: "当你感到压力很大时，你会？",
+                options: [
+                    "找人倾诉，说出来就好了",
+                    "独自消化，自我调节大师",
+                    "通过运动释放，流汗解压法",
+                    "专注于解决问题，从根源消除压力"
+                ]
+            },
+            {
+                text: "你更喜欢哪种社交方式？",
+                options: [
+                    "大型聚会活动，社交牛逼症发作",
+                    "小范围亲密聚会，高质量社交",
+                    "一对一深度交流，灵魂对话",
+                    "线上社交互动，网友奔现预备役"
+                ]
+            },
+            {
+                text: "你如何看待金钱和财富？",
+                options: [
+                    "追求财务自由，目标是早日退休",
+                    "够用就好，知足常乐",
+                    "享受花钱快乐，及时行乐主义者",
+                    "理性规划理财，稳健型选手"
+                ]
+            },
+            {
+                text: "你更喜欢哪种类型的食物？",
+                options: [
+                    "传统家常菜，妈妈的味道最温暖",
+                    "异国创意料理，舌尖上的冒险",
+                    "健康轻食，吃草也要优雅",
+                    "重口味刺激食物，无辣不欢"
+                ]
+            },
+            {
+                text: "当你面对未知的挑战时，你会？",
+                options: [
+                    "兴奋并立即接受，初生牛犊不怕虎",
+                    "谨慎评估后再决定，三思而后行",
+                    "寻求他人意见，集思广益",
+                    "先观察学习，谋定而后动"
+                ]
+            },
+            {
+                text: "你更喜欢哪种类型的环境？",
+                options: [
+                    "繁华都市，都市丽人/型男的生活",
+                    "宁静乡村，向往的生活",
+                    "海滨湖畔，面朝大海春暖花开",
+                    "山林自然，归园田居"
+                ]
+            },
+            {
+                text: "你如何看待个人成长？",
+                options: [
+                    "持续学习进步，卷王本王",
+                    "顺其自然不强求，佛系成长",
+                    "突破舒适区，人生不设限",
+                    "保持现状稳定发展，稳中求进"
+                ]
+            },
+            {
+                text: "你更喜欢哪种类型的艺术？",
+                options: [
+                    "绘画雕塑，视觉盛宴",
+                    "音乐舞蹈，律动人生",
+                    "电影戏剧，人生如戏",
+                    "文学诗歌，文艺青年"
+                ]
+            },
+            {
+                text: "当你面对选择时，你更倾向于？",
+                options: [
+                    "听从内心感受，跟着感觉走",
+                    "理性分析利弊，数据说话",
+                    "咨询他人意见，听人劝吃饱饭",
+                    "凭直觉决定，第一感觉最准"
+                ]
+            },
+            {
+                text: "你更喜欢哪种类型的节日庆祝方式？",
+                options: [
+                    "热闹聚会活动，嗨到天亮",
+                    "温馨家庭聚餐，家的温暖",
+                    "安静自我反思，独处时光",
+                    "旅行探索新地，诗和远方"
+                ]
+            },
+            {
+                text: "你如何看待人际关系？",
+                options: [
+                    "广泛交友建立人脉，朋友多了路好走",
+                    "深交少数知己，质量重于数量",
+                    "保持适当距离，边界感很重要",
+                    "随缘不强求，佛系社交"
+                ]
+            }
+        ];
+
+        // 动物类型定义 - 为每种动物分配独特的颜色和矢量图标
+        const animalTypes = {
+            otter: {
+                name: "水獭",
+                color: "#4A90E2", // 蓝色
+                icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%234A90E2' d='M50,20 C70,20 85,35 85,55 C85,75 70,90 50,90 C30,90 15,75 15,55 C15,35 30,20 50,20 Z'/%3E%3Ccircle cx='40' cy='45' r='5' fill='white'/%3E%3Ccircle cx='60' cy='45' r='5' fill='white'/%3E%3Cpath fill='white' d='M45,65 C45,67 47,69 50,69 C53,69 55,67 55,65 C55,63 53,61 50,61 C47,61 45,63 45,65 Z'/%3E%3C/svg%3E",
+                outerDesc: "作为外在动物，水獭代表你那活泼开朗、社交牛逼症的一面。在别人眼中，你总是那个能带动气氛的开心果，像水獭一样喜欢玩闹和社交。你的幽默感堪比脱口秀演员，总能在尴尬时刻用一句'这是可以说的吗'化解危机。朋友们形容你就是个行走的梗图生成器，跟你在一起永远不会无聊，毕竟谁能拒绝一个会手舞足蹈讲段子的朋友呢？你的社交能力就像水獭在水中游刃有余，无论什么场合都能快速适应并找到自己的位置。",
+                innerDesc: "作为内在动物，水獭揭示了你内心深处那个永远长不大的孩子。虽然外表看起来是个社交达人，其实你内心住着一个需要被关注和认可的小可爱。当你独自一人时，可能会像水獭一样浮在水面上发呆，思考人生的意义（或者今晚吃什么）。你渴望真诚的连接，虽然表面上嘻嘻哈哈，但其实非常重视那些能看懂你脆弱面的朋友。你的内心世界其实比外表看起来要丰富得多，只是不轻易向人展示。",
+                outerFriendsView: "在朋友眼中，你就是那个'人间充电宝'——总能给周围人带来能量。他们觉得你是个超级有趣的人，跟你在一起就像在看现场版脱口秀。你的朋友可能会偷偷把你的糗事做成表情包在群里传播，但这恰恰证明了大家有多喜欢你。他们知道，无论多糟糕的情况，你都能找到笑点，把阴天变成晴天。",
+                innerSelfView: "你内心深处其实是个敏感的小可爱，虽然外表看起来像个没心没肺的快乐源泉。你会在深夜emo时翻看旧照片，也会因为一部动画电影哭得稀里哗啦。你渴望被理解和接纳，希望有人能看穿你的搞笑伪装，拥抱那个偶尔也会不安和脆弱的真实你。你的内心其实比外表要细腻得多，只是不轻易展示这一面。",
+                outerTraits: ["社交牛逼症", "幽默感MAX", "气氛组担当", "梗王", "快乐传染源"],
+                innerTraits: ["内心住着小孩", "敏感细腻", "渴望被爱", "偶尔emo", "需要安全感"]
+            },
+            capybara: {
+                name: "水豚",
+                color: "#7ED321", // 绿色
+                icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%237ED321' d='M50,25 C65,25 75,35 75,50 C75,65 65,75 50,75 C35,75 25,65 25,50 C25,35 35,25 50,25 Z'/%3E%3Ccircle cx='40' cy='45' r='3' fill='white'/%3E%3Ccircle cx='60' cy='45' r='3' fill='white'/%3E%3Cpath fill='white' d='M45,60 C45,62 47,64 50,64 C53,64 55,62 55,60 C55,58 53,56 50,56 C47,56 45,58 45,60 Z'/%3E%3C/svg%3E",
+                outerDesc: "作为外在动物，水豚代表你那佛系到让人羡慕的生活态度。在别人眼中，你总是那么淡定从容，仿佛世间纷扰都与你无关。你的名言是'都可以'、'没关系'、'随便啦'，活脱脱一个行走的佛系表情包。朋友们都好奇你是不是偷偷修炼了什么绝世内功，才能在任何情况下都保持那种'我就静静看着你们折腾'的超然态度。你的淡定不是装出来的，而是发自内心的平和与接纳。",
+                innerDesc: "作为内在动物，水豚揭示了你内心深处对平和与和谐的极致追求。虽然外表看起来与世无争，其实你内心有一套自己的处世哲学：不争不抢，该来的总会来。你像水豚一样，拥有让所有动物都愿意亲近的特质，因为你从不评判，总是接纳。这种内在的平静让你在风暴中心也能安然处之，仿佛自带一个与世隔绝的结界。你的内心其实比外表看起来要强大得多。",
+                outerFriendsView: "在朋友眼中，你就是那个'人间镇定剂'——无论多焦虑的时刻，看到你淡定的样子就能平静下来。他们觉得你是个超级可靠的朋友，因为你永远不会慌乱，总能给出最理性的建议。你的朋友可能会开玩笑说你是'穿越来的古人'，因为你的淡定程度简直不符合这个焦虑的时代。",
+                innerSelfView: "你内心深处其实非常清楚自己要什么，只是不愿意为了追求而失去内心的平静。你享受独处的时光，喜欢那种'世界纷纷扰扰，与我无关'的感觉。虽然看起来随和，其实你有着坚定的内心边界，知道什么时候该说'不'。你相信，生命最好的状态就是像水豚一样，在温泉里泡着，看着天空发呆。",
+                outerTraits: ["佛系大师", "淡定王者", "随和达人", "冷静担当", "人间镇定剂"],
+                innerTraits: ["内心平和", "界限清晰", "自知之明", "享受孤独", "哲学思维"]
+            },
+            raccoon: {
+                name: "浣熊",
+                color: "#BD10E0", // 紫色
+                icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23BD10E0' d='M50,20 C65,20 80,35 80,50 C80,65 65,80 50,80 C35,80 20,65 20,50 C20,35 35,20 50,20 Z'/%3E%3Ccircle cx='40' cy='40' r='4' fill='white'/%3E%3Ccircle cx='60' cy='40' r='4' fill='white'/%3E%3Cpath fill='white' d='M45,60 C45,62 47,64 50,64 C53,64 55,62 55,60 C55,58 53,56 50,56 C47,56 45,58 45,60 Z'/%3E%3C/svg%3E",
+                outerDesc: "作为外在动物，浣熊代表你那聪明机智、偶尔有点小狡猾的一面。在别人眼中，你总是那个能想出各种'骚操作'解决问题的机灵鬼。你的生存能力堪比浣熊，总能在各种环境中找到生存之道。朋友们都佩服你那'给我一个支点，我能撬动地球'的创意能力，虽然有时候你的方法确实有点'刑'。你的机智和灵活让你在复杂情况下总能找到出路。",
+                innerDesc: "作为内在动物，浣熊揭示了你内心深处那个永远好奇、喜欢探索的冒险家。虽然外表看起来是个务实的问题解决者，其实你内心住着一个喜欢夜间出没的神秘探险家。你像浣熊一样，对世界充满好奇，喜欢在夜深人静时思考人生（或者翻垃圾桶找灵感）。你渴望新鲜刺激的体验，虽然表面上可能装作很稳重的样子。你的内心其实比外表要狂野得多。",
+                outerFriendsView: "在朋友眼中，你就是那个'点子王'——总能在大家束手无策时想出令人拍案叫绝的解决方案。他们觉得你是个超级有趣的朋友，因为你总能带他们体验各种新奇的事物。你的朋友可能会开玩笑说你是'法外狂徒张三的远房亲戚'，因为你的某些操作确实游走在规则的边缘。",
+                innerSelfView: "你内心深处其实是个浪漫的冒险家，虽然外表看起来像个务实的现实主义者。你渴望打破常规，体验不一样的生活，但又担心太过出格会带来麻烦。这种矛盾让你时而大胆时而谨慎，像浣熊一样在冒险与安全之间寻找平衡。你相信，人生就是要像浣熊偷食物一样，既要勇敢又要机智。",
+                outerTraits: ["机智过人", "创意无限", "问题解决者", "灵活变通", "骚操作大师"],
+                innerTraits: ["冒险精神", "好奇心强", "浪漫主义", "矛盾体", "寻找平衡"]
+            },
+            sloth: {
+                name: "树懒",
+                color: "#F5A623", // 橙色
+                icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23F5A623' d='M50,25 C65,25 75,35 75,50 C75,65 65,75 50,75 C35,75 25,65 25,50 C25,35 35,25 50,25 Z'/%3E%3Ccircle cx='40' cy='45' r='3' fill='white'/%3E%3Ccircle cx='60' cy='45' r='3' fill='white'/%3E%3Cpath fill='white' d='M45,60 C45,62 47,64 50,64 C53,64 55,62 55,60 C55,58 53,56 50,56 C47,56 45,58 45,60 Z'/%3E%3C/svg%3E",
+                outerDesc: "作为外在动物，树懒代表你那'慢生活大师'的独特气质。在别人眼中，你总是那个能躺着绝不坐着、能坐着绝不站着的节能主义者。你的行动速度让树懒都自愧不如，但你的思维却可能比谁都快。朋友们都羡慕你那'世界再卷也卷不到我'的淡定态度，虽然他们偶尔也会因为你回消息的速度而抓狂。你的慢不是懒惰，而是一种生活哲学。",
+                innerDesc: "作为内在动物，树懒揭示了你内心深处对简单生活的向往。虽然外表看起来懒散，其实你内心有着自己独特的生活节奏和哲学。你像树懒一样，懂得生命不在于忙碌而在于体验，每一个缓慢的动作都是为了更好地感受当下。在这个快节奏的世界里，你坚持着自己的'慢哲学'，相信慢下来才能看见更美的风景。你的内心其实比外表要丰富得多。",
+                outerFriendsView: "在朋友眼中，你就是那个'人间清醒'——在大家都在为生活奔波时，你却能保持自己的节奏。他们觉得你是个很有智慧的朋友，因为你总能看到事物的本质。你的朋友可能会开玩笑说你是'节能环保大使'，因为你的生活方式确实很低碳——连动作都省了。",
+                innerSelfView: "你内心深处其实非常清楚生活的真谛，只是不愿意被社会的快节奏所绑架。你享受那种'慢工出细活'的满足感，喜欢深度体验而非浅尝辄止。虽然看起来懒散，其实你有着丰富的内心世界，只是不愿意轻易展示给外人。你相信，像树懒一样慢慢生活，才能品尝到生命最真实的味道。",
+                outerTraits: ["慢生活大师", "节能专家", "淡定王者", "我行我素", "反内卷先锋"],
+                innerTraits: ["内心丰富", "生活哲学家", "深度思考者", "坚持自我", "享受当下"]
+            },
+            penguin: {
+                name: "企鹅",
+                color: "#000000", // 黑色
+                icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23000000' d='M50,20 C65,20 80,35 80,50 C80,65 65,80 50,80 C35,80 20,65 20,50 C20,35 35,20 50,20 Z'/%3E%3Ccircle cx='40' cy='40' r='4' fill='white'/%3E%3Ccircle cx='60' cy='40' r='4' fill='white'/%3E%3Cpath fill='white' d='M45,60 C45,62 47,64 50,64 C53,64 55,62 55,60 C55,58 53,56 50,56 C47,56 45,58 45,60 Z'/%3E%3C/svg%3E",
+                outerDesc: "作为外在动物，企鹅代表你那外表严肃内心闷骚的反差萌。在别人眼中，你总是那个穿着得体、举止优雅的绅士/淑女，但熟悉你的人都知道你内心住着一个搞笑艺人。你的反差萌堪比企鹅——表面上是个正经的上班族，实际上是个会在年会上跳极乐净土的隐藏玩家。你的优雅不是装出来的，而是骨子里的气质。",
+                innerDesc: "作为内在动物，企鹅揭示了你内心深处对归属感和家庭的重视。虽然外表看起来独立自主，其实你非常珍视那些与你志同道合的'企鹅群'。你像企鹅一样，有着强烈的忠诚度和责任感，对认定的朋友和家人会无条件支持。在这个浮躁的世界里，你坚守着那些最传统也最珍贵的情感纽带。你的内心其实比外表要传统得多。",
+                outerFriendsView: "在朋友眼中，你就是那个'反差萌代表'——表面上是个正经人，实际上是个沙雕。他们觉得你是个超级可靠的朋友，因为你既有企鹅的稳重，又不失幽默感。你的朋友可能会偷偷拍下你正经工作和你放飞自我的对比照，因为这反差实在太可爱了。",
+                innerSelfView: "你内心深处其实是个传统又浪漫的人，虽然外表可能看起来像个现代酷哥/酷姐。你渴望建立稳定而深厚的关系，相信'慢火炖好汤'的感情哲学。虽然适应了现代社会的快节奏，但你内心始终保留着一片纯真的天地，那里有你对美好生活的所有想象。",
+                outerTraits: ["反差萌大师", "外表严肃", "内心沙雕", "优雅与搞笑并存", "可靠又可爱"],
+                innerTraits: ["重视家庭", "忠诚可靠", "传统浪漫", "内心纯真", "渴望稳定"]
+            },
+            red_panda: {
+                name: "小熊猫",
+                color: "#FF6B6B", // 红色
+                icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23FF6B6B' d='M50,25 C65,25 75,35 75,50 C75,65 65,75 50,75 C35,75 25,65 25,50 C25,35 35,25 50,25 Z'/%3E%3Ccircle cx='40' cy='45' r='3' fill='white'/%3E%3Ccircle cx='60' cy='45' r='3' fill='white'/%3E%3Cpath fill='white' d='M45,60 C45,62 47,64 50,64 C53,64 55,62 55,60 C55,58 53,56 50,56 C47,56 45,58 45,60 Z'/%3E%3C/svg%3E",
+                outerDesc: "作为外在动物，小熊猫代表你那可爱又有点小傲娇的独特气质。在别人眼中，你总是那个让人忍不住想rua的可爱存在，但又有自己的小脾气。你的萌点在于那种'我超凶的'但实际上毫无威慑力的反差感，像小熊猫一样，即使生气也让人觉得可爱到爆炸。你的可爱不是刻意为之，而是天生的气质。",
+                innerDesc: "作为内在动物，小熊猫揭示了你内心深处对独特性和自我表达的渴望。虽然外表看起来可爱无害，其实你内心有着强烈的个人风格和审美。你像小熊猫一样，不喜欢随大流，总是坚持自己的独特品味和生活方式。在这个追求一致性的世界里，你勇敢地做那个'不一样的烟火'。你的内心其实比外表要强大得多。",
+                outerFriendsView: "在朋友眼中，你就是那个'人间小可爱'——总能用你的萌点治愈大家的心情。他们觉得你是个超级有趣的朋友，因为你总能带来惊喜和欢乐。你的朋友可能会收集你的各种表情包，因为你的每个表情都值得被记录下来反复欣赏。",
+                innerSelfView: "你内心深处其实是个艺术家，虽然外表看起来像个无忧无虑的小可爱。你渴望通过某种形式表达自己独特的视角和情感，可能是通过艺术、写作或者其他创意方式。虽然有时候会因为自己的与众不同而感到孤独，但你知道，正是这种独特性让你成为了如此特别的存在。",
+                outerTraits: ["可爱暴击", "傲娇萌", "治愈系", "表情包素材库", "人间小太阳"],
+                innerTraits: ["独特个性", "艺术灵魂", "渴望表达", "偶尔孤独", "坚持自我"]
+            },
+            fox: {
+                name: "狐狸",
+                color: "#FF8C00", // 深橙色
+                icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23FF8C00' d='M50,20 C65,20 80,35 80,50 C80,65 65,80 50,80 C35,80 20,65 20,50 C20,35 35,20 50,20 Z'/%3E%3Ccircle cx='40' cy='40' r='4' fill='white'/%3E%3Ccircle cx='60' cy='40' r='4' fill='white'/%3E%3Cpath fill='white' d='M45,60 C45,62 47,64 50,64 C53,64 55,62 55,60 C55,58 53,56 50,56 C47,56 45,58 45,60 Z'/%3E%3C/svg%3E",
+                outerDesc: "作为外在动物，狐狸代表你那机智灵活、善于适应的特质。在别人眼中，你总是那个能在复杂环境中找到最优解的人，像狐狸一样聪明且富有策略。你的洞察力让你能够快速理解他人意图，并在社交场合中游刃有余。朋友们佩服你那'总能找到出路'的能力，即使面对困境也能想出巧妙的解决方案。",
+                innerDesc: "作为内在动物，狐狸揭示了你内心深处对知识和智慧的渴望。虽然外表看起来务实且目标导向，其实你内心有着强烈的好奇心和探索欲。你像狐狸一样，喜欢观察和分析，总是试图理解事物背后的原理和规律。这种内在的求知欲让你不断成长，并在各种情境中都能保持清晰的思考。",
+                outerFriendsView: "在朋友眼中，你就是那个'智多星'——总能提供独特的见解和实用的建议。他们觉得你是个值得信赖的顾问，因为你的判断往往准确且富有远见。你的朋友可能会开玩笑说你是'现实版的诸葛亮'，因为你的策略思维确实令人佩服。",
+                innerSelfView: "你内心深处其实是个永远的学生，虽然外表看起来像个经验丰富的专家。你享受学习新知识的过程，对未知领域充满好奇。虽然擅长社交，但你更珍视那些能够深入交流的知性对话。你相信，真正的智慧不在于知道多少，而在于保持开放的心态和持续学习的热情。",
+                outerTraits: ["机智灵活", "善于适应", "策略思维", "洞察力强", "解决问题能手"],
+                innerTraits: ["求知欲强", "好奇心重", "深度思考", "持续学习", "内在智慧"]
+            },
+            owl: {
+                name: "猫头鹰",
+                color: "#8B7355", // 棕色
+                icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%238B7355' d='M50,25 C65,25 75,35 75,50 C75,65 65,75 50,75 C35,75 25,65 25,50 C25,35 35,25 50,25 Z'/%3E%3Ccircle cx='40' cy='45' r='3' fill='white'/%3E%3Ccircle cx='60' cy='45' r='3' fill='white'/%3E%3Cpath fill='white' d='M45,60 C45,62 47,64 50,64 C53,64 55,62 55,60 C55,58 53,56 50,56 C47,56 45,58 45,60 Z'/%3E%3C/svg%3E",
+                outerDesc: "作为外在动物，猫头鹰代表你那睿智深思、善于观察的特质。在别人眼中，你总是那个能在混乱中保持冷静、在复杂中看到本质的人。你的理性思维和客观分析能力让你成为团队中的智囊，朋友们在重要决策时往往会寻求你的意见。你那'夜猫子'的特性也让你在深夜时思维最为活跃。",
+                innerDesc: "作为内在动物，猫头鹰揭示了你内心深处对真理和知识的追求。虽然外表看起来冷静理性，其实你内心有着丰富的哲学思考和深刻的内省。你像猫头鹰一样，喜欢在安静的环境中沉思，探索生命的深层意义。这种内在的深度让你拥有独特的视角，能够看到别人忽略的细节和联系。",
+                outerFriendsView: "在朋友眼中，你就是那个'行走的百科全书'——知识渊博且见解独到。他们觉得你是个值得深交的朋友，因为与你的对话总能带来新的启发。你的朋友可能会开玩笑说你是'团队的大脑'，因为你的思考确实为集体带来了许多价值。",
+                innerSelfView: "你内心深处其实是个永恒的探索者，虽然外表看起来像个稳重的学者。你享受思考的过程，对世界的奥秘充满好奇。虽然不擅长表面的社交，但你珍视那些能够深入交流的灵魂对话。你相信，真正的智慧来自于对自我和世界的持续探索与理解。",
+                outerTraits: ["睿智深思", "善于观察", "理性分析", "客观公正", "团队智囊"],
+                innerTraits: ["哲学思考", "深刻内省", "探索精神", "独特视角", "追求真理"]
+            }
+        };
+
+        // 测试逻辑
+        let currentQuestion = 0;
+        let answers = [];
+        let outerAnimalScores = {};
+        let innerAnimalScores = {};
+        let questions = [];
+
+        // 初始化分数
+        function initScores() {
+            Object.keys(animalTypes).forEach(animal => {
+                outerAnimalScores[animal] = 0;
+                innerAnimalScores[animal] = 0;
+            });
+        }
+
+        // 随机选择40道题目
+        function selectRandomQuestions() {
+            // 复制题目池
+            const tempQuestions = [...questionPool];
+            questions = [];
+            
+            // 随机选择40道题目
+            for (let i = 0; i < 40; i++) {
+                if (tempQuestions.length === 0) break;
+                
+                const randomIndex = Math.floor(Math.random() * tempQuestions.length);
+                questions.push(tempQuestions[randomIndex]);
+                tempQuestions.splice(randomIndex, 1);
+            }
+        }
+
+        // DOM元素
+        const questionScreen = document.getElementById('questionScreen');
+        const resultScreen = document.getElementById('resultScreen');
+        const questionNumber = document.getElementById('questionNumber');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const progressBar = document.getElementById('progressBar');
+        const prevBtn = document.getElementById('prevBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        const shopBtn = document.getElementById('shopBtn');
+
+        // 初始化测试
+        function initTest() {
+            currentQuestion = 0;
+            answers = [];
+            initScores();
+            selectRandomQuestions();
+            showQuestion();
+        }
+
+        // 显示当前问题
+        function showQuestion() {
+            // 更新进度条
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            
+            // 更新问题编号和文本
+            questionNumber.textContent = `第${currentQuestion + 1}题/共${questions.length}题`;
+            questionText.textContent = questions[currentQuestion].text;
+            
+            // 清空选项容器
+            optionsContainer.innerHTML = '';
+            
+            // 生成选项
+            questions[currentQuestion].options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                if (answers[currentQuestion] === index) {
+                    optionElement.classList.add('selected');
+                }
+                optionElement.textContent = option;
+                optionElement.addEventListener('click', () => selectOption(index));
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // 更新按钮状态
+            prevBtn.disabled = currentQuestion === 0;
+        }
+
+        // 选择选项
+        function selectOption(optionIndex) {
+            answers[currentQuestion] = optionIndex;
+            
+            // 更新选项样式
+            const options = document.querySelectorAll('.option');
+            options.forEach((option, index) => {
+                if (index === optionIndex) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+            
+            // 自动跳转到下一题
+            setTimeout(() => {
+                if (currentQuestion < questions.length - 1) {
+                    currentQuestion++;
+                    showQuestion();
+                } else {
+                    calculateResults();
+                    showResults();
+                }
+            }, 300);
+        }
+
+        // 上一题
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion();
+            }
+        });
+
+        // 计算结果
+        function calculateResults() {
+            // 根据答案计算动物得分
+            answers.forEach((answer, index) => {
+                // 前20题影响外在动物，后20题影响内在动物
+                const isOuter = index < 20;
+                const scoreValue = 4 - answer; // 第一个选项=3分，第二个=2分，第三个=1分，第四个=0分
+                
+                // 根据答案类型分配动物
+                let animal;
+                if (answer === 0) { // 第一个选项 - 水獭/小熊猫
+                    animal = Math.random() > 0.5 ? 'otter' : 'red_panda';
+                } else if (answer === 1) { // 第二个选项 - 水豚/树懒
+                    animal = Math.random() > 0.5 ? 'capybara' : 'sloth';
+                } else if (answer === 2) { // 第三个选项 - 浣熊/狐狸
+                    animal = Math.random() > 0.5 ? 'raccoon' : 'fox';
+                } else { // 第四个选项 - 企鹅/猫头鹰
+                    animal = Math.random() > 0.5 ? 'penguin' : 'owl';
+                }
+                
+                if (isOuter) {
+                    outerAnimalScores[animal] += scoreValue;
+                } else {
+                    innerAnimalScores[animal] += scoreValue;
+                }
+            });
+            
+            // 找出得分最高的动物
+            let maxOuterScore = 0;
+            let maxInnerScore = 0;
+            let outerAnimal = '';
+            let innerAnimal = '';
+            
+            Object.keys(animalTypes).forEach(animal => {
+                if (outerAnimalScores[animal] > maxOuterScore) {
+                    maxOuterScore = outerAnimalScores[animal];
+                    outerAnimal = animal;
+                }
+                if (innerAnimalScores[animal] > maxInnerScore) {
+                    maxInnerScore = innerAnimalScores[animal];
+                    innerAnimal = animal;
+                }
+            });
+            
+            return { outerAnimal, innerAnimal };
+        }
+
+        // 显示结果
+        function showResults() {
+            const { outerAnimal, innerAnimal } = calculateResults();
+            
+            // 更新结果页面
+            document.getElementById('outerAnimalName').textContent = animalTypes[outerAnimal].name;
+            document.getElementById('innerAnimalName').textContent = animalTypes[innerAnimal].name;
+            
+            document.getElementById('outerAnimalDesc').textContent = animalTypes[outerAnimal].outerDesc;
+            document.getElementById('innerAnimalDesc').textContent = animalTypes[innerAnimal].innerDesc;
+            
+            document.getElementById('outerAnimalFriendsView').textContent = animalTypes[outerAnimal].outerFriendsView;
+            document.getElementById('innerAnimalSelfView').textContent = animalTypes[innerAnimal].innerSelfView;
+            
+            // 设置动物图标
+            document.getElementById('outerAnimalIcon').style.backgroundImage = `url('${animalTypes[outerAnimal].icon}')`;
+            document.getElementById('innerAnimalIcon').style.backgroundImage = `url('${animalTypes[innerAnimal].icon}')`;
+            
+            // 更新动物特征
+            const outerTraitsContainer = document.getElementById('outerAnimalTraits');
+            const innerTraitsContainer = document.getElementById('innerAnimalTraits');
+            
+            outerTraitsContainer.innerHTML = '';
+            innerTraitsContainer.innerHTML = '';
+            
+            animalTypes[outerAnimal].outerTraits.forEach(trait => {
+                const traitElement = document.createElement('div');
+                traitElement.className = 'trait';
+                traitElement.textContent = trait;
+                traitElement.style.backgroundColor = animalTypes[outerAnimal].color + '20';
+                traitElement.style.color = animalTypes[outerAnimal].color;
+                traitElement.style.borderColor = animalTypes[outerAnimal].color;
+                outerTraitsContainer.appendChild(traitElement);
+            });
+            
+            animalTypes[innerAnimal].innerTraits.forEach(trait => {
+                const traitElement = document.createElement('div');
+                traitElement.className = 'trait';
+                traitElement.textContent = trait;
+                traitElement.style.backgroundColor = animalTypes[innerAnimal].color + '20';
+                traitElement.style.color = animalTypes[innerAnimal].color;
+                traitElement.style.borderColor = animalTypes[innerAnimal].color;
+                innerTraitsContainer.appendChild(traitElement);
+            });
+            
+            // 设置动物卡片颜色
+            const outerCard = document.querySelector('.animal-card:nth-child(1)');
+            const innerCard = document.querySelector('.animal-card:nth-child(2)');
+            
+            outerCard.style.borderTop = `6px solid ${animalTypes[outerAnimal].color}`;
+            innerCard.style.borderTop = `6px solid ${animalTypes[innerAnimal].color}`;
+            
+            // 切换到结果屏幕
+            questionScreen.style.display = 'none';
+            resultScreen.style.display = 'block';
+        }
+
+        // 重新开始测试
+        restartBtn.addEventListener('click', () => {
+            resultScreen.style.display = 'none';
+            questionScreen.style.display = 'block';
+            initTest();
+        });
+
+        // 跳转到小红书店铺
+        shopBtn.addEventListener('click', () => {
+            window.open('https://xhslink.com/m/1HpWUO6Yhkn', '_blank');
+        });
+
+        // 启动测试
+        initTest();
+    </script>
+</body>
+</html>
